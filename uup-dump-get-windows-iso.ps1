@@ -32,8 +32,6 @@ $TARGETS = @{
             #     "sha256ready": true
             #   }
 
-    $buildDirectory = "$destinationDirectory/$name-$($iso.build)"
-    $destinationBuildMetadataPath = "*.json"
     $destinationIsoPath = "$*.iso"
     $destinationIsoChecksumPath = "$destinationIsoPath.sha256.txt"
 
@@ -71,7 +69,6 @@ $TARGETS = @{
     cmd /c uup_download_windows.cmd
     Pop-Location
 
-    $sourceIsoPath = Resolve-Path $buildDirectory/*.iso
 
     Write-Host "Getting the $sourceIsoPath checksum"
     $isoChecksum = (Get-FileHash -Algorithm SHA256 $sourceIsoPath).Hash.ToLowerInvariant()
