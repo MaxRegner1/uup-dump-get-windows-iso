@@ -258,4 +258,4 @@ function Get-WindowsIso($name, $destinationDirectory) {
     Write-Host 'All Done.'
 }
 
-Get-WindowsIso $windowsTargetName $destinationDirectory
+Get-WindowsIso 
