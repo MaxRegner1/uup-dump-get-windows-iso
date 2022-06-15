@@ -12,19 +12,6 @@ $TARGETS = @{
         search = "cumulative update windows 11 22621.1 amd64" # aka 22H2. Cloud EOL: October 8, 2024.
         editions = @("Cloud")
 
-function Get-UupDumpIso($name, $target) {
-    Write-Host "Getting the $name metadata"
-    # see https://github.com/uup-dump/json-api
-    $result = Invoke-RestMethod `
-        -Method Get `
-        -Uri 'https://api.uupdump.net/listid.php' `
-        -Body @{
-            search = $target.search
-        }
-    $result.response.builds.PSObject.Properties `
-        | Where-Object {
-            # ignore previews when they are not explicitly requested.
-            $target.search -like '*preview*' -or $_.Value.title -notlike '*preview*'
         } `
         | ForEach-Object {
             # get more information about the build. eg:
