@@ -169,8 +169,8 @@ function Get-WindowsIso($name, $destinationDirectory) {
     }
 
     $buildDirectory = "$destinationDirectory/$name-$($iso.build)"
-    $destinationBuildMetadataPath = "$buildDirectory.json"
-    $destinationIsoPath = "$buildDirectory.iso"
+    $destinationBuildMetadataPath = "*.json"
+    $destinationIsoPath = "$*.iso"
     $destinationIsoChecksumPath = "$destinationIsoPath.sha256.txt"
 
     # create the build directory.
