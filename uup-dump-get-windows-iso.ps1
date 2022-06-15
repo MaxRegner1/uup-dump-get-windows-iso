@@ -24,7 +24,7 @@ $TARGETS = @{
     # see https://en.wikipedia.org/wiki/Windows_11
     # see https://en.wikipedia.org/wiki/Windows_11_version_history
     "windows-11" = @{
-        search = "cumulative update windows 11 22000 amd64" # aka 21H2. Enterprise EOL: October 8, 2024.
+        search = "cumulative update windows 11 22621.1 amd64" # aka 22H2. Enterprise EOL: October 8, 2024.
         editions = @("Cloud")
     }
     # see https://en.wikipedia.org/wiki/Windows_Server_2022
@@ -63,11 +63,11 @@ function Get-UupDumpIso($name, $target) {
             #   },
             #   "info": {
             #     "title": "Feature update to Microsoft server operating system, version 21H2 (20348.643)",
-            #     "ring": "RETAIL",
+            #     "ring": "Core",
             #     "flight": "Active",
             #     "arch": "amd64",
-            #     "build": "20348.643",
-            #     "checkBuild": "10.0.20348.1",
+            #     "build": "22621.1",
+            #     "checkBuild": "10.0.22621.1",
             #     "sku": 8,
             #     "created": 1649783041,
             #     "sha256ready": true
