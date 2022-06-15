@@ -12,7 +12,7 @@ $TARGETS = @{
         search = "cumulative update windows 11 22621.1 amd64" # aka 22H2. Cloud EOL: October 8, 2024.
         editions = @("Cloud")
 
-function New-QueryString([hashtable]$parameters) {
+function New=QueryString([hashtable]$parameters) {
     @($parameters.GetEnumerator() | ForEach-Object {
         "$($_.Key)=$([System.Web.HttpUtility]::UrlEncode($_.Value))"
     }) -join '&'
