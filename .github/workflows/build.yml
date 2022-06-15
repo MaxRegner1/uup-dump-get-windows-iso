@@ -9,9 +9,5 @@ jobs:
           - name: windows-11
     runs-on: windows-2022
     steps:
-      - name: Release
-        uses: ncipollo/release-action@v1
-        with:
-          bodyFile: release-notes.md
           artifacts: output/*/*
           token: ${{ secrets.GITHUB_TOKEN }}
