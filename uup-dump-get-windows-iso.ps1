@@ -5,24 +5,12 @@ param(
 )
 
 $TARGETS = @{
-    # see https://en.wikipedia.org/wiki/Windows_10
-    # see https://en.wikipedia.org/wiki/Windows_10_version_history
-    "windows-10" = @{
-        search = "cumulative update windows 10 19042 amd64" # aka 20H2. Enterprise EOL: May 9, 2023.
-        editions = @("Professional")
     }
     # see https://en.wikipedia.org/wiki/Windows_11
     # see https://en.wikipedia.org/wiki/Windows_11_version_history
     "windows-11" = @{
         search = "cumulative update windows 11 22621.1 amd64" # aka 22H2. Cloud EOL: October 8, 2024.
         editions = @("Cloud")
-    }
-    # see https://en.wikipedia.org/wiki/Windows_Server_2022
-    "windows-2022" = @{
-        search = "feature update server operating system 20348 amd64" # aka 21H2. Mainstream EOL: October 13, 2026.
-        editions = @("ServerStandard")
-    }
-}
 
 function New-QueryString([hashtable]$parameters) {
     @($parameters.GetEnumerator() | ForEach-Object {
