@@ -14,7 +14,7 @@ $TARGETS = @{
     # see https://en.wikipedia.org/wiki/Windows_11
     # see https://en.wikipedia.org/wiki/Windows_11_version_history
     "windows-11" = @{
-        search = "cumulative update windows 11 22621.1 amd64" # aka 22H2. Enterprise EOL: October 8, 2024.
+        search = "cumulative update windows 11 22621.1 amd64" # aka 22H2. Cloud EOL: October 8, 2024.
         editions = @("Cloud")
     }
     # see https://en.wikipedia.org/wiki/Windows_Server_2022
@@ -248,4 +248,3 @@ function Get-WindowsIso($name, $destinationDirectory) {
     Write-Host 'All Done.'
 }
 
-Get-WindowsIso 
