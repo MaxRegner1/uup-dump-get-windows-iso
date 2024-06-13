@@ -62,12 +62,19 @@ function Invoke-UupDumpApi {
             Write-Host "Retrying the uup-dump api ${name} request #$n"
         }
         try {
-            return Invoke-RestMethod `
+            $response = Invoke-RestMethod `
                 -Method Get `
                 -Uri "https://api.uupdump.net/$name.php" `
                 -Body $body
+            if ($response.response.error -eq "SEARCH_NO_RESULTS") {
+                throw "SEARCH_NO_RESULTS: No results found for the search query."
+            }
+            return $response
         } catch {
             Write-Host "WARN: failed the uup-dump api $name request: $_"
+            if ($_.Exception.Message -match "SEARCH_NO_RESULTS") {
+                Exit 1
+            }
         }
     }
     throw "timeout making the uup-dump api $name request"
@@ -221,13 +228,19 @@ function Get-WindowsIso {
 
     $buildDirectory = "$destinationDirectory/$name"
     $destinationIsoPath = "$buildDirectory.iso"
+    $destinationIsoChecksumPath = "$destinationIsoPath.sha256"
     $destinationIsoMetadataPath = "$destinationIsoPath.json"
-    $destinationIsoChecksumPath = "$destinationIsoPath.sha256.txt"
+    if (Test-Path $destinationIsoPath `
+            -and Test-Path $destinationIsoChecksumPath `
+            -and Test-Path $destinationIsoMetadataPath) {
+        Write-Host "$destinationIsoPath already exists"
+        return
+    }
 
     if (Test-Path $buildDirectory) {
-        Remove-Item -Force -Recurse $buildDirectory | Out-Null
+        Remove-Item -Recurse -Force $buildDirectory
     }
-    New-Item -ItemType Directory -Force $buildDirectory | Out-Null
+    $null = New-Item -Directory $buildDirectory
 
     $edition = if ($iso.virtualEdition) {
         $iso.virtualEdition
