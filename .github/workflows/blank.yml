@@ -8,10 +8,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: windows-10-pro-unofficial
-          - name: windows-10-home-unofficial
-          - name: windows-10-education-unofficial
-          - name: windows-10-enterprise-unofficial
+          - name: windows-10-pro
+          - name: windows-10-home
+          - name: windows-10-education
+          - name: windows-10-enterprise
     runs-on: windows-2022
     steps:
       - name: Checkout
