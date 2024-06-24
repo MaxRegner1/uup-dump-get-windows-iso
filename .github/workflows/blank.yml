@@ -8,10 +8,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: windows-10-inoffiziell
-          - name: windows-11-inoffiziell
-          - name: windows-2022-inoffiziell
-          - name: windows-2025-inoffiziell
+          - name: windows-10-unofficial-build1
+          - name: windows-10-unofficial-build2
+          - name: windows-10-unofficial-build3
     runs-on: windows-2022
     steps:
       - name: Checkout
@@ -73,3 +72,4 @@ jobs:
             * GitHub: [Distributing large binaries](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github#distributing-large-binaries)
             * ncipollo/release-action#110: [Artifacts over 2147483647 bytes do not get uploaded](https://github.com/ncipollo/release-action/issues/110)
           EOF
+
