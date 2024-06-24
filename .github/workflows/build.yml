@@ -5,9 +5,71 @@ jobs:
   build:
     strategy:
       matrix:
+        os: [windows-2022, windows-2019]
         include:
           - name: windows-11
-    runs-on: windows-2022
+            os: windows-2022
+          - name: windows-10
+            os: windows-2019
+    runs-on: ${{ matrix.os }}
+
+   steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Show available disk space before build
+        run: Get-PSDrive -PSProvider FileSystem
+
+      - name: Build
+        run: pwsh uup-dump-get-windows-iso.ps1 ${{ matrix.name }} c:/output
+
+      - name: Show available disk space after build
+        run: Get-PSDrive -PSProvider FileSystem
+
+      - name: Build summary
+        run: |
+          $iso = Get-Content (Resolve-Path c:/output/*.json) | ConvertFrom-Json
+          Add-Content $env:GITHUB_STEP_SUMMARY @"
+          | Property | Value |
+          | :--- | :--- |
+          | Name | $($iso.name) |
+          | Build | $($iso.build) |
+          | Checksum | $($iso.checksum) |
+          $($iso.images | ForEach-Object {"| Image Name #$($_.index) | $($_.name) |"})
+          | UUP dump | [$($iso.title)]($($iso.uupDump.downloadUrl)) |
+          "@
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.name }}
+          path: |
+            c:/output/*.json
+            c:/output/*.iso
+            c:/output/*.iso.sha256.txt
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    name: Release
+    runs-on: ubuntu-20.04
+    needs:
+      - build
     steps:
-          artifacts: output/*/*
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: output
+
+      - name: Release notes
+        run: |
+          cat >release-notes.md <<EOF
+          This is a useless release, because in a GitHub release a single file
+          size cannot be above 2GB and these ISO files are 4GB+.
+          See:
+            * GitHub: [Storage and bandwidth quotas](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases#storage-and-bandwidth-quotas)
+            * GitHub: [Distributing large binaries](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github#distributing-large-binaries)
+            * ncipollo/release-action#110: [Artifacts over 2147483647 bytes do not get uploaded](https://github.com/ncipollo/release-action/issues/110)
+          EOF 
